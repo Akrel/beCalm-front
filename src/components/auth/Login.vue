@@ -102,6 +102,7 @@ export default {
 
   data: () => ({
     email: '',
+    username: 'qww',
     password: 'Password',
     show1: false,
     rules: {
@@ -135,7 +136,6 @@ export default {
 
     clear() {
       this.$v.$reset()
-      this.name = ''
       this.email = ''
       this.select = null
       this.checkbox = false
@@ -148,12 +148,12 @@ export default {
 
 #divider {
   align-items: center;
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-bottom: 10px;
   color: black;
   font-size: 17px;
   font-weight: bold;
 }
-
 
 #background-login {
   display: flex;
@@ -186,7 +186,7 @@ export default {
 
   display: flex;
   flex-direction: column;
-  margin-top: 35%;
+  margin-top: 1%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -200,7 +200,7 @@ export default {
 .title-input {
   font-size: 15px;
   color: black;
-  margin-top: 20px;
+  margin-top: 10px;
   padding-bottom: 5px;
 }
 
@@ -219,7 +219,7 @@ export default {
 
 .v-text-field >>> .v-messages__wrapper {
   margin-top: 4px;
-  font-size: 15px;
+  font-size: 11px;
 
 }
 
@@ -247,8 +247,6 @@ export default {
   width: 80%;
   justify-content: space-between;
   display: flex;
-  margin-top: 20px;
-
   margin-left: auto;
   margin-right: auto;
   flex-direction: column;
@@ -256,6 +254,7 @@ export default {
 
 #media >>> .v-btn {
   border-radius: 20px;
+  margin-top: 2px;
 }
 
 #back-login {
@@ -267,10 +266,6 @@ export default {
   color: white;
 }
 
-#media-btn1 {
-  float: right;
-  margin-top: 20px;
-}
 
 .dialogCss {
   background: #8e5ba6;

@@ -1,7 +1,7 @@
 <template>
   <div id="background-login">
     <div id="content">
-      <form id="register-form">
+      <form id="register-form" name="formRegister" @submit="submit">
 
         <div class="label-container">
           <div class="title-input">Email</div>
@@ -13,6 +13,19 @@
               solo
               @blur="$v.email.$touch()"
               @input="$v.email.$touch()"
+          ></v-text-field>
+        </div>
+
+        <div id="name-container">
+          <div class="title-input">UserName</div>
+          <v-text-field
+              ref="username"
+              v-model="username"
+              :error-messages="errorMessages"
+              :rules="[() => !!username || 'This field is required']"
+              label="Username"
+              required
+              solo
           ></v-text-field>
         </div>
 
@@ -50,14 +63,15 @@
           <div class="title-input">Password</div>
           <v-text-field
               v-model="password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min]"
-              :type="show1 ? 'text' : 'password'"
+              :append-icon="pshow1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[rules.required, rules.min,passwordMessages()]"
+              :type="pshow1 ? 'text' : 'password'"
               hint="At least 8 characters"
               label="Password"
               name="input-10-1"
+              required
               solo
-              @click:append="show1 = !show1"
+              @click:append="pshow1 = !pshow1"
           ></v-text-field>
         </div>
 
@@ -66,23 +80,25 @@
           <div class="title-input">Re-password</div>
           <v-text-field
               v-model="repassword"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min]"
-              :type="show1 ? 'text' : 'password'"
+              :append-icon="pshow2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[rules.required, rules.min,passwordMessages()]"
+              :type="pshow2 ? 'text' : 'password'"
               hint="At least 8 characters"
               label="Password"
               name="input-10-1"
+              required
               solo
-              @click:append="show1 = !show1"
+              @click:append="pshow2 = !pshow2"
           ></v-text-field>
         </div>
 
 
         <v-btn
             id="button-login"
-
-            @click="submit"
+            type="submitbt"
         >
+          <!--            @click="submit"-->
+
           <v-icon style="margin-right: 3px"> mdi-lock-open</v-icon>
           submit
         </v-btn>
@@ -98,7 +114,9 @@
           <v-btn
               active-class="button-media"
               class="verilog dialogCss"
-              @click="submit">
+          >
+
+
             submit
           </v-btn>
 
@@ -128,6 +146,7 @@
 import {validationMixin} from 'vuelidate'
 import {email, maxLength, required} from 'vuelidate/lib/validators'
 import {mdiArrowLeft} from '@mdi/js';
+import User from "../models/user";
 
 export default {
   name: "Register",
@@ -136,18 +155,20 @@ export default {
   validations: {
     name: {required, maxLength: maxLength(10)},
     email: {required, email},
-    select: {required},
-    checkbox: {
-      checked(val) {
-        return val
-      },
-    },
+    password: {required},
+    repassword: {required}
   },
 
   data: () => ({
-    email: '',
-    password: 'Password',
-    show1: false,
+    email: 'wojtekgrelewicz@gmail.com',
+    name: 'wojtek',
+    errorMessages: '',
+    username: 'wojtekgrelewicz',
+    surname: 'qqqq',
+    password: 'qqqqqqqq',
+    repassword: 'qqqqqqqq',
+    pshow1: false,
+    pshow2: false,
     rules: {
       required: value => !!value || 'Required.',
       min: v => v.length >= 8 || 'Min 8 characters',
@@ -167,6 +188,9 @@ export default {
       !this.$v.email.required && errors.push('E-mail is required')
       return errors
     },
+    passwordMessages() {
+      return () => (this.password === this.repassword) || "Your password and confirmation password do not match."
+    }
   },
 
   methods: {
@@ -176,18 +200,40 @@ export default {
     backlogin() {
       this.$router.push("log")
     },
-    clear() {
-      this.$v.$reset()
-      this.name = ''
-      this.email = ''
-      this.select = null
-      this.checkbox = false
-    },
+    submit() {
+      let user = new User(this.username, this.email, this.password, this.name, this.surname);
+      this.$store.dispatch('auth/register', user)
+          .then(
+              data => {
+                console.log(data.message)
+                this.message = data.message;
+              },
+              error => {
+                this.message =
+                    (error.response && error.response.data && error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+              }
+          )
+      console.log("dsa")
+    }
+
   },
+  watch: {
+    email: function (val) {
+      console.log(email)
+      this.username = val.substring(0, val.indexOf('@'));
+    }
+
+  }
+
 }
 </script>
 
 <style scoped>
+* {
+  overflow: none;
+}
 
 #divider {
   align-items: center;
@@ -215,9 +261,11 @@ export default {
   order: 2;
   width: 150px;
   float: right;
+
 }
 
 #content {
+
   width: 35%;
   margin-left: auto;
   order: 1;
@@ -241,14 +289,14 @@ export default {
 .title-input {
   font-size: 15px;
   color: black;
-  margin-top: 10px;
-  padding-bottom: 5px;
+  margin-top: 1px;
+  padding-bottom: 1px;
 }
 
 
 .v-text-field >>> .v-messages__wrapper {
-  margin-top: 4px;
-  font-size: 15px;
+  margin-top: 7px;
+  font-size: 13px;
 
 }
 
@@ -259,6 +307,7 @@ export default {
 }
 
 .v-text-field {
+
   border-radius: 10px;
 }
 
@@ -271,6 +320,19 @@ export default {
   height: 40px;
 }
 
+.v-text-field >>> .v-input__slot {
+  margin-bottom: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.v-text-field.v-text-field--solo >>> .v-input__control {
+  min-height: 40px !important;
+}
+
+.v-text-field >>> .v-text-field--enclosed >>> .v-text-field__details {
+  margin-bottom: 0;
+}
 
 #media {
 
@@ -320,11 +382,10 @@ export default {
   #media {
     flex-direction: column;
   }
-  #name-surname-labels
-  {
+
+  #name-surname-labels {
     flex-direction: column;
   }
-
 
   #media >>> v-btn {
     background-color: red;

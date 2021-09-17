@@ -20,7 +20,7 @@ Vue.component('login', Login)
 
 const routes = [
     {
-        path: '/log',
+        path: '/',
         name: 'login',
         component: () => import('../components/auth/Login'),
 

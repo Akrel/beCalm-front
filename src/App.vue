@@ -7,23 +7,20 @@
 <script>
 
 
-
 export default {
   name: 'App',
 
-  components: {
-
-
-
-  },
+  components: {},
 
 };
 </script>
+<style>
 
+</style>
 
 <style scoped>
-v-app{
-overflow: hidden;
+v-app {
+  overflow: hidden;
   width: 100%;
 }
 
