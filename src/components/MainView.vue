@@ -1,6 +1,4 @@
 <template>
-
-
   <div id="conteiner">
     <div>
       <TopMenuBar></TopMenuBar>
@@ -8,30 +6,26 @@
     <div id="main">
       <MenuNav></MenuNav>
       <div id="div-loader">
-
         <Calendar></Calendar>
-
       </div>
     </div>
   </div>
-
-
 </template>
 
-
 <script>
-
-
 import MenuNav from "@/components/mainView/MenuNav";
 import TopMenuBar from "@/components/mainView/TopMenuBar";
 import Calendar from "@/components/activity/Calendar";
 
 export default {
-  components: {Calendar, TopMenuBar, MenuNav}
-}
+  components: { Calendar, TopMenuBar, MenuNav }
+};
 </script>
 
 <style scoped>
+* {
+  overflow: hidden;
+}
 #div-loader {
   width: 100%;
   height: 100%;
@@ -39,7 +33,6 @@ export default {
   display: flex;
   flex-direction: row;
 }
-
 
 #div-loader > div {
   /* these are the flex items */
@@ -54,19 +47,15 @@ export default {
   display: flex;
   width: 100%;
   height: 95%;
-
 }
 
 #conteiner {
   display: inline-block;
   width: 100%;
   height: 100%;
-
 }
 
-
 #view-main {
-
   position: relative;
 }
 </style>

@@ -1,76 +1,75 @@
-import AuthService from "../services/auth.service"
+import AuthService from "../services/auth.service";
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem("user"));
 
-const stateInit = user ? {status: {loggedIn: true}, user}
-    : {status: {loggedIn: false}, user: null};
-
+const stateInit = user
+  ? { status: { loggedIn: true }, user }
+  : { status: { loggedIn: false }, user: null };
 
 export const auth = {
-    namespaced: true,
-    state: stateInit,
-    actions: {
-
-        login({commit}, user) {
-            return AuthService.login(user).then(
-                user => {
-                    commit('loginSuccess', user);
-                    return Promise.resolve(user)
-                },
-                error => {
-                    commit('loginFailure');
-                    return Promise.reject(error);
-                }
-            );
+  namespaced: true,
+  state: stateInit,
+  actions: {
+    login({ commit }, user) {
+      return AuthService.login(user).then(
+        user => {
+          commit("loginSuccess", user);
+          return Promise.resolve(user);
         },
-
-        register({commit}, user) {
-            return AuthService.register(user).then(
-                response => {
-                    commit('registerSuccess');
-                    return Promise.resolve(response.data);
-                },
-                error => {
-                    commit('registerFailure');
-                    return Promise.reject(error);
-                }
-            )
-        },
-
-        refreshToken({commit}, accessToken) {
-            commit('refreshToken', accessToken);
+        error => {
+          commit("loginFailure");
+          return Promise.reject(error);
         }
+      );
     },
 
-    mutations: {
-
-        refreshToken(state, accessToken) {
-            state.status.loggedIn = true;
-            state.user = {...state.user, accessToken: accessToken}
+    register({ commit }, user) {
+      return AuthService.register(user).then(
+        response => {
+          console.log(response.data);
+          commit("registerSuccess");
+          return Promise.resolve(response.data);
         },
-
-        loginSuccess(state, user) {
-            state.user.loggedIn = true;
-            state.user = user;
-        },
-
-        loginFailure(state) {
-            state.status.loggedIn = false;
-            status.user = null;
-        },
-
-        logout(state) {
-            state.status.loggedIn = false;
-            state.user = null;
-        },
-
-        registerSuccess(state) {
-            state.status.logggIn = false;
-        },
-
-        registerFailure(state) {
-            state.status.loggedIn = false;
+        error => {
+          console.log("aaaa");
+          commit("registerFailure");
+          return Promise.reject(error);
         }
-    }
-}
+      );
+    },
 
+    refreshToken({ commit }, accessToken) {
+      commit("refreshToken", accessToken);
+    }
+  },
+
+  mutations: {
+    refreshToken(state, accessToken) {
+      state.status.loggedIn = true;
+      state.user = { ...state.user, accessToken: accessToken };
+    },
+
+    loginSuccess(state, user) {
+      state.user.loggedIn = true;
+      state.user = user;
+    },
+
+    loginFailure(state) {
+      state.status.loggedIn = false;
+      status.user = null;
+    },
+
+    logout(state) {
+      state.status.loggedIn = false;
+      state.user = null;
+    },
+
+    registerSuccess(state) {
+      state.status.logggIn = false;
+    },
+
+    registerFailure(state) {
+      state.status.loggedIn = false;
+    }
+  }
+};
