@@ -13,9 +13,10 @@
 </template>
 
 <script>
-import MenuNav from "@/components/mainView/MenuNav";
-import TopMenuBar from "@/components/mainView/TopMenuBar";
-import Calendar from "@/components/activity/Calendar";
+import MenuNav from "./navigation/MenuNav";
+import TopMenuBar from "./navigation/TopMenuBar";
+import Calendar from "../activity/Calendar";
+
 
 export default {
   components: { Calendar, TopMenuBar, MenuNav }

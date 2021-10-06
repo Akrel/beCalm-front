@@ -1,18 +1,18 @@
 <template>
   <v-app>
-   <calendar-event/>
+    <router-view/>
   </v-app>
 </template>
 
 <script>
-import CalendarEvent from "./components/activity/Calendar-event";
+
+
 export default {
   name: "App",
 
-  components: {CalendarEvent}
+
 };
 </script>
-<style></style>
 
 <style scoped>
 v-app {

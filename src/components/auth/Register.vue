@@ -178,7 +178,7 @@ export default {
       this.$router.push("register");
     },
     backlogin() {
-      this.$router.push("/");
+      this.$router.push("/login");
     },
     submit() {
       let user = new User(

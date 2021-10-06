@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Register from "@/components/auth/Register";
 import Login from "@/components/auth/Login";
-import MainView from "../components/MainView";
+import MainView from "../components/mainView/MainView";
 
 Vue.use(VueRouter);
 Vue.component("register", Register);
@@ -30,8 +30,8 @@ const routes = [
 
   {
     path: "/",
-    name: "mainViw",
-    component: () => import("../components/MainView")
+    name: "mainView",
+    component: () => import("../components/mainView/MainView")
   }
 ];
 

@@ -1,52 +1,52 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          Open Dialog
-        </v-btn>
-      </template>
+    <v-dialog value="dialog" max-width="600px" persistent @submit="save()">
       <v-card>
         <v-card-text id="conteiner-labels">
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Tittle" required></v-text-field>
+                <v-text-field
+                    v-model="tittle"
+                    label="Tittle"
+                    required
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6">
                 <v-switch
-                    inset
                     v-model="checkbox"
                     :label="`All day`"
+                    inset
                 ></v-switch>
               </v-col>
 
               <v-col v-if="checkbox" cols="12" sm="6">
                 <data-picker
+                    v-model="this.startDate"
                     label="Start Date"
-                    v-model="startDate"
+                    ref="refDateStart"
                 ></data-picker>
               </v-col>
 
               <v-row v-else cols="12">
-                <data-picker v-model="startDate" label="Start Date">
+                <data-picker ref="refDateStart_all" v-model="startDate" label="Start Date">
                 </data-picker>
-                <time-picker v-model="startTime" label="Start Time">
+                <time-picker ref="refTimeStart" v-model="startTime" label="Start Time">
                 </time-picker>
 
-                <data-picker v-model="endTime" label="End Date"></data-picker>
-                <time-picker v-model="endDate" label="End Time"></time-picker>
+                <data-picker ref="refTimeEnd" v-model="endTime" label="End Date"></data-picker>
+                <time-picker ref="refDateEnd" v-model="endDate" label="End Time"></time-picker>
               </v-row>
-<ToItem></ToItem>
               <v-row cols="12">
                 <v-textarea
-                    name="input-7-1"
+                    v-model="this.texarea"
+                    auto-grow
                     filled
                     label="Description"
-                    auto-grow
-                    :value="texarea"
-                ></v-textarea>
+                    name="input-7-1"
+                >{{ this.tittle }}}
+                </v-textarea>
               </v-row>
             </v-row>
             <v-row cols="12">
@@ -56,10 +56,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
+          <v-btn color="blue darken-1">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
+          <v-btn color="blue darken-1" text @click="save">
             Save
           </v-btn>
         </v-card-actions>
@@ -72,36 +72,47 @@
 import DataPicker from "./popups/DataPicker";
 import TimePicker from "./popups/TimePicker";
 import ColorPicker from "./popups/ColorPicker";
-import ToItem from "./popups/ToItem";
 
 export default {
   name: "calendar-event",
-  props: ["startDate"],
+  props: ["dialog"],
 
   data: () => ({
+    tittle: "",
     startDate: "",
     startTime: "",
     endDate: "",
     endTime: "",
     texarea: "",
     color: null,
-    dialog: false,
     checkbox: true,
     date: ""
   }),
 
   components: {
-    ToItem,
     ColorPicker,
     TimePicker,
     dataPicker: DataPicker
   },
 
   methods: {
-    op() {
-      this.startDate.getDate();
+    save() {
+    //ednpoint do posta z dodaniem zadania i zbudowac dto
+
+      //nastepnie do parenta wysyłam forceUpdate()
+
+      if (this.checkbox)
+        console.log(this.$refs.refDateStart.date + " asd" + " ");
+      else
+        console.log(this.$refs.refDateStart_all.date + " asd" + " ");
+      this.$emit("calendarEvent", this.startDate);
     }
+  },
+
+  created() {
+
   }
+
 };
 </script>
 

@@ -24,18 +24,17 @@ export const auth = {
     },
 
     register({ commit }, user) {
-      return AuthService.register(user).then(
-        response => {
-          console.log(response.data);
+      return AuthService.register(user)
+        .then(response => {
           commit("registerSuccess");
+          console.log("succes " + response.data);
           return Promise.resolve(response.data);
-        },
-        error => {
-          console.log("aaaa");
+        })
+        .catch(error => {
           commit("registerFailure");
+          console.log("aaaaaaaaaaaaa " + error);
           return Promise.reject(error);
-        }
-      );
+        });
     },
 
     refreshToken({ commit }, accessToken) {

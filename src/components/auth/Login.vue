@@ -1,13 +1,14 @@
 <template>
   <div id="background-login">
+    z
     <div id="content">
       <form id="form" @submit="login">
         <div class="label-container">
           <div class="title-input">Username</div>
           <v-text-field
             v-model="username"
-            label="Username"
             :rules="[() => !!username || 'This field is required']"
+            label="Username"
             required
             solo
             @blur="$v.username.$touch()"
@@ -65,6 +66,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { email, maxLength, required } from "vuelidate/lib/validators";
+import UserRequestLogin from "../models/login-request";
 
 export default {
   name: "Login",
@@ -82,8 +84,9 @@ export default {
   },
 
   data: () => ({
-    username: "qww",
+    username: "wojtekgrelewicz",
     password: "qqqqqqqq",
+    message: "",
     show1: false,
 
     rules: {
@@ -92,10 +95,30 @@ export default {
       emailMatch: () => `The email and password you entered don't match`
     }
   }),
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    }
+  },
 
   methods: {
     login() {
-      console.log(this.username + " " + this.password);
+      let userRequest = new UserRequestLogin(this.username,this.password)
+      if (this.username && this.password) {
+        this.$store
+          .dispatch('auth/login',userRequest  )
+          .then(
+            () => {
+              this.$router.push("/mainView");
+            },
+            error => {
+              this.message =
+                (error.response && error.response.data.message) ||
+                error.message ||
+                error.toString();
+            }
+          );
+      }
     },
 
     backregister() {

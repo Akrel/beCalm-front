@@ -1,6 +1,7 @@
 import api from "./api";
 import TokenService from "../services/token.service";
-import endpoint from "../endpoint.json";
+
+
 class AuthService {
   login({ username, password }) {
     return api
@@ -8,8 +9,10 @@ class AuthService {
         username,
         password
       })
-      .then(response => {
-        if (response.data.accessToken) TokenService.setUser(response.data);
+      .then((response) => {
+        if (response.data.accessToken) {
+          TokenService.setUser(response.data);
+        }
 
         return response.data;
       });
@@ -21,7 +24,10 @@ class AuthService {
 
   register(User) {
     console.log(User);
-    return api.post(`${endpoint.url}/auth/signup`, User);
+    let promise1 = api.post("/auth/signup", User);
+    promise1.then(r => console.log(r.status));
+    return promise1;
   }
 }
+
 export default new AuthService();

@@ -5,7 +5,7 @@
 <script>
 export default {
   name: "TopMenuBar",
-  data() {},
+  data: () => ({ }),
   methods: {}
 };
 </script>
