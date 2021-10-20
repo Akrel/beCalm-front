@@ -1,16 +1,14 @@
 <template>
   <v-menu offset-y>
-    <template v-slot:activator="{ on }">
+    <template  v-slot:activator="{ on }">
       <v-btn
           :color="color"
-          dark
           v-on="on"
       >
         Event Color
       </v-btn>
     </template>
     <v-color-picker
-        value="#7417BE"
         v-model="color"
         hide-canvas
         hide-inputs
@@ -24,7 +22,11 @@
 <script>
 export default {
   name: "ColorPicker",
-  data: () => ({color: '',}),
+  data: () => ({color: ''}),
+
+  created() {
+    this.color = Math.floor(Math.random() * 16777215).toString(16)
+  }
 
 }
 </script>

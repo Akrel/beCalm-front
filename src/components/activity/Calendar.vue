@@ -83,14 +83,7 @@
               @mouseup:time="endDrag"
               @mouseleave.native="cancelDrag"
           >
-            <template v-slot:event="{ event, timed, eventSummary }">
-              <div class="v-event-draggable" v-html="eventSummary()"></div>
-              <div
-                  v-if="timed"
-                  class="v-event-drag-bottom"
-                  @mousedown.stop="extendBottom(event)"
-              ></div>
-            </template>
+
           </v-calendar>
           <v-menu
               v-model="selectedOpen"
@@ -106,13 +99,16 @@
                 <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                 <v-spacer>
                 </v-spacer>
-                <v-btn icon>
+                <v-btn v-on:click="remove" icon>
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-toolbar>
               <v-card-text>
-
+                <h4 id="view-text-des">Description:</h4>
+                <span style="font-size: 18px">{{ selectedEvent.desc }}</span>
               </v-card-text>
+
+
               <v-card-actions>
                 <v-btn color="secondary" text @click="selectedOpen = false">
                   Cancel
@@ -174,10 +170,37 @@ export default {
     createStart: null,
     extendOriginal: null
   }),
-  mounted() {
-    this.$refs.calendar.checkChange();
-  },
+
+  /*  beforeUpdate() {
+
+      console.log("dsa")
+      this.events = this.$store.getters["calendar/getTask"];
+
+      console.log("dsa")
+      },*/
+
   methods: {
+
+    getEvents() {
+      this.$store
+          .dispatch('calendar/getAllTaskInMonth', this.$refs.calendar.parsedValue.month).then(() =>{
+        let getter = this.$store.getters["calendar/getTask"];
+        this.events = getter;
+      });
+    },
+
+
+    remove() {
+      this.selectedEvent
+      let taskUuid = this.selectedEvent.taskUuid;
+      this.$store.dispatch('calendar/removeTask',taskUuid)
+      .then(() =>{
+        this.reload();
+      })
+      console.log('')
+    },
+
+
     viewDay({date}) {
       this.focus = date;
       this.type = "day";
@@ -195,15 +218,15 @@ export default {
     addNewEvent() {
 
       this.dialog = true
-    /*  this.createEvent = {
-        name: `3Event #${this.events.length}`,
-        color: this.rndElement(this.colors),
-        start: this.createStart,
-        end: this.createStart,
-        content: "asdasdaaaaaaaaaaaaaaaaaaaaaaa",
-        timed: true,
-      };
-*/
+      /*  this.createEvent = {
+          name: `3Event #${this.events.length}`,
+          color: this.rndElement(this.colors),
+          start: this.createStart,
+          end: this.createStart,
+          content: "asdasdaaaaaaaaaaaaaaaaaaaaaaa",
+          timed: true,
+        };
+  */
       //this.events.push(this.createEvent);
 
     },
@@ -218,7 +241,7 @@ export default {
     showEvent({nativeEvent, event}) {
       const open = () => {
         console.log(event)
-      //  this.selectedEvent = event;
+        this.selectedEvent = event;
         this.selectedElement = nativeEvent.target;
         var s = this.selectedElement.name;
         console.log(s)
@@ -340,32 +363,32 @@ export default {
     },
 
 
-    getEvents({start, end}) {
-      const events = [];
+    /*  getEvents({start, end}) {
+        const events = [];
 
-      const min = new Date(`${start.date}T00:00:00`).getTime();
-      const max = new Date(`${end.date}T23:59:59`).getTime();
-      const days = (max - min) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
+        const min = new Date(`${start.date}T00:00:00`).getTime();
+        const max = new Date(`${end.date}T23:59:59`).getTime();
+        const days = (max - min) / 86400000;
+        const eventCount = this.rnd(days, days + 20);
 
-      for (let i = 0; i < eventCount; i++) {
-        const timed = this.rnd(0, 3) !== 0;
-        const firstTimestamp = this.rnd(min, max);
-        const secondTimestamp = this.rnd(2, timed ? 8 : 288) * 900000;
-        const start = firstTimestamp - (firstTimestamp % 900000);
-        const end = start + secondTimestamp;
+        for (let i = 0; i < eventCount; i++) {
+          const timed = this.rnd(0, 3) !== 0;
+          const firstTimestamp = this.rnd(min, max);
+          const secondTimestamp = this.rnd(2, timed ? 8 : 288) * 900000;
+          const start = firstTimestamp - (firstTimestamp % 900000);
+          const end = start + secondTimestamp;
 
-        events.push({
-          name: this.rndElement(this.names),
-          color: this.rndElement(this.colors),
-          start,
-          end,
-          timed
-        });
-      }
+          events.push({
+            name: this.rndElement(this.names),
+            color: this.rndElement(this.colors),
+            start,
+            end,
+            timed
+          });
+        }
 
-      this.events = events;
-    },
+        this.events = events;
+      },*/
 
 
     rndElement(arr) {
@@ -395,6 +418,10 @@ export default {
 
 #el > div > div > div:nth-child(2) > div.v-calendar-monthly.v-calendar-weekly.v-calendar.theme--light.v-calendar-events > div.v-calendar-weekly__head {
   background-color: lightblue !important;
+}
+
+#view-text-des {
+  color: black;
 }
 
 v-sheet {

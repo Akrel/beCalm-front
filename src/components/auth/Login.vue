@@ -24,7 +24,7 @@
             :rules="[() => !!password || 'This field is required', rules.min]"
             :type="show1 ? 'text' : 'password'"
             hint="At least 8 characters"
-            label="Normal with hint text"
+            label="Password"
             name="input-10-1"
             solo
             @click:append="show1 = !show1"
@@ -103,8 +103,8 @@ export default {
 
   methods: {
     login() {
-      let userRequest = new UserRequestLogin(this.username,this.password)
       if (this.username && this.password) {
+        let userRequest = new UserRequestLogin(this.username,this.password)
         this.$store
           .dispatch('auth/login',userRequest  )
           .then(

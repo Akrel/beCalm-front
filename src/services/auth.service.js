@@ -1,7 +1,6 @@
 import api from "./api";
 import TokenService from "../services/token.service";
 
-
 class AuthService {
   login({ username, password }) {
     return api
@@ -10,10 +9,12 @@ class AuthService {
         password
       })
       .then((response) => {
-        if (response.data.accessToken) {
+        console.log("e " + response.data)
+        if (response.data.token) {
           TokenService.setUser(response.data);
         }
 
+        console.log("response" + response.data.token);
         return response.data;
       });
   }
