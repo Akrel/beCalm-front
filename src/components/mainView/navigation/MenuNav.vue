@@ -4,9 +4,9 @@
       <v-list-item link>
         <v-list-item-content>
           <v-list-item-title class="text-h7">
-            Sandra Adams
+            {{this.name}}
           </v-list-item-title>
-          <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
+          <v-list-item-subtitle style="font-size: 15px">{{this.email}}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -35,6 +35,9 @@ export default {
 
   //https://vuetifyjs.com/en/components/treeview/#selectable-icons
   data: () => ({
+    email:"",
+    name:"",
+
     items: [
       {
         id: 2,
@@ -105,6 +108,12 @@ export default {
         ? (item, search, textKey) => item[textKey].indexOf(search) > -1
         : undefined;
     }
+  },
+  created() {
+    let userJson = JSON.parse(localStorage.getItem('user'));
+    this.email = userJson.email;
+    this.name = userJson.userName;
+
   }
 };
 </script>

@@ -21,12 +21,11 @@ class CalendarService {
     });
   }
 
-  /*
-        editTask(evenCalendarModel) {
-          return api.put("/calendar/editTask", evenCalendarModel).then(response => {
-            return response;
-          });
-        }*/
+  editTask(evenCalendarModel) {
+    return api.put("/calendar/editTask", evenCalendarModel).then(response => {
+      return response;
+    });
+  }
 }
 
 export default new CalendarService();

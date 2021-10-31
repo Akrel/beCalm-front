@@ -10,7 +10,7 @@ class AuthService {
       })
       .then((response) => {
         console.log("e " + response.data)
-        if (response.data.token) {
+        if (response.data.accessToken) {
           TokenService.setUser(response.data);
         }
 
@@ -20,7 +20,11 @@ class AuthService {
   }
 
   logout() {
-    TokenService.removeUser();
+    return api.post("/auth/logout")
+        .then((response) => {
+          if(response.data.status === 200)
+            TokenService.removeUser()
+        })
   }
 
   register(User) {

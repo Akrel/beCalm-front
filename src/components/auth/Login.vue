@@ -1,6 +1,6 @@
 <template>
   <div id="background-login">
-    z
+
     <div id="content">
       <form id="form" @submit="login">
         <div class="label-container">

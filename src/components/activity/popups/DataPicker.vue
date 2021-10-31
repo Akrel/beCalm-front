@@ -24,15 +24,24 @@
 <script>
 export default {
   name: "Data-Picker",
-  props: {label: {required: true, type: String},},
+  props: ["label", "dateProps"],
   data() {
     return {
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      date: "",
 
       menu2: false
     };
-  }
+  },
 
+
+  created() {
+    if (this.dateProps !== undefined && this.dateProps !== "") {
+      this.date = new Date(this.dateProps).toISOString().substr(0, 10)
+
+    } else
+      this.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+
+  }
 };
 </script>
 

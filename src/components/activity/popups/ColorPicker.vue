@@ -1,6 +1,6 @@
 <template>
   <v-menu offset-y>
-    <template  v-slot:activator="{ on }">
+    <template v-slot:activator="{ on }">
       <v-btn
           :color="color"
           v-on="on"
@@ -22,10 +22,14 @@
 <script>
 export default {
   name: "ColorPicker",
-  data: () => ({color: ''}),
+  props: ["colorProps"],
+  data: () => ({color: ""}),
 
   created() {
-    this.color = Math.floor(Math.random() * 16777215).toString(16)
+    if (this.colorProps !== undefined && this.colorProps !== "")
+      this.color = this.colorProps;
+    else
+      this.color = Math.floor(Math.random() * 16777215).toString(16)
   }
 
 }
