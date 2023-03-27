@@ -1,14 +1,16 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Register from "@/components/auth/Register";
+import Register from "../components/auth/Register";
 import Login from "../components/auth/Login";
 import MainView from "../components/mainView/MainView";
-import ToDo from "../components/Todo"
+import Calendar from "../components/activity/Calendar";
+import TodoList from "../components/toDoList/TodoList";
+
 Vue.use(VueRouter);
 Vue.component("register", Register);
 Vue.component("login", Login);
 Vue.component("mainView", MainView);
-Vue.component("ToDo", ToDo);
+Vue.component("TodoList", TodoList);
 
 const loggedInGuard = (to, from, next) => {
   if (localStorage.getItem("user")) {
@@ -17,7 +19,6 @@ const loggedInGuard = (to, from, next) => {
     next("/login");
   }
 };
-
 const notLoggedInGuard = (to, from, next) => {
   if (localStorage.getItem("user")) {
     next("/");
@@ -30,7 +31,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("../components/auth/Login"),
+    component: Login,
     beforeEnter: notLoggedInGuard
   },
   {
@@ -39,19 +40,38 @@ const routes = [
     component: () => import("../components/auth/Register"),
     beforeEnter: notLoggedInGuard
   },
-  {
-    path: "/toDo",
-    name: "todo",
-    component: () => import("../components/Todo"),
-    beforeEnter: loggedInGuard
-  },
-
 
   {
     path: "/",
+    redirect: '/calendar',
     name: "mainView",
-    component: () => import("../components/mainView/MainView"),
-    beforeEnter: loggedInGuard
+    component: MainView,
+    beforeEnter: loggedInGuard,
+    children: [
+      {
+        path: "/calendar",
+        component: Calendar,
+        beforeEnter: loggedInGuard
+      },
+      {
+        path: "/todoList/:filter",
+        component: TodoList,
+        props: true,
+        beforeEach(to, from, next) {
+          if (
+            ["all", "active", "completed"].some(
+              record => record === to.params.filter
+            )
+          ) {
+            next();
+          } else {
+            next("/all");
+          }
+        },
+
+        beforeEnter: loggedInGuard
+      }
+    ]
   }
 ];
 

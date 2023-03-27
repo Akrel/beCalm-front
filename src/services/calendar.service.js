@@ -3,7 +3,7 @@ import api from "./api";
 class CalendarService {
   addTask(eventCalendarModel) {
     return api
-      .put("/calendar/addNewTask", eventCalendarModel)
+      .post(`/calendar/addNewTask`, eventCalendarModel)
       .then(response => {
         return response;
       });

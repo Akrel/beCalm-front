@@ -12,7 +12,7 @@
                 outlined
                 @click="setToday"
             >
-              Today
+              Dziś
             </v-btn>
             <v-btn color="grey darken-2" fab small text @click="prev">
               <v-icon small>
@@ -42,16 +42,16 @@
               </template>
               <v-list>
                 <v-list-item @click="type = 'day'">
-                  <v-list-item-title>Day</v-list-item-title>
+                  <v-list-item-title>Dzień</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="type = 'week'">
-                  <v-list-item-title>Week</v-list-item-title>
+                  <v-list-item-title>Tydzień</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="type = 'month'">
-                  <v-list-item-title>Month</v-list-item-title>
+                  <v-list-item-title>Miesiac</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="type = '4day'">
-                  <v-list-item-title>4 days</v-list-item-title>
+                  <v-list-item-title>4 Dni</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -132,11 +132,11 @@ export default {
     dialog: false,
     type: "month",
     typeToLabel: {
-      year: "Year",
-      month: "Month",
-      week: "Week",
-      day: "Day",
-      "4day": "4 Days"
+      year: "Rok",
+      month: "Miesiąc",
+      week: "Tydzień",
+      day: "Dzień",
+      "4day": "4 Dni"
     },
     selectedEvent: {},
     selectedElement: null,

@@ -1,7 +1,7 @@
 <template>
   <div id="background-login">
     <div id="content">
-      <form id="register-form" name="formRegister" @submit="submit">
+      <div id="register-form" >
         <div class="label-container">
           <div class="title-input">Email</div>
           <v-text-field
@@ -14,7 +14,7 @@
         </div>
 
         <div id="name-container">
-          <div class="title-input">UserName</div>
+          <div class="title-input">Nazwa użytkownika</div>
           <v-text-field
             ref="username"
             v-model="username"
@@ -28,7 +28,7 @@
 
         <div id="name-surname-labels">
           <div id="name-container">
-            <div class="title-input">First Name</div>
+            <div class="title-input">Imie</div>
             <v-text-field
               ref="name"
               v-model="name"
@@ -41,7 +41,7 @@
           </div>
 
           <div id="surname-container">
-            <div class="title-input">Surname</div>
+            <div class="title-input">Nazwisko</div>
             <v-text-field
               ref="surname"
               v-model="surname"
@@ -55,7 +55,7 @@
         </div>
 
         <div class="label-container">
-          <div class="title-input">Password</div>
+          <div class="title-input">Hasło</div>
           <v-text-field
             v-model="password"
             :append-icon="pshow1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -71,7 +71,7 @@
         </div>
 
         <div class="label-container">
-          <div class="title-input">Re-password</div>
+          <div class="title-input">Powtórz hasło</div>
           <v-text-field
             v-model="repassword"
             :append-icon="pshow2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -89,30 +89,19 @@
         <p id="error" v-if="isRegistered === false">
           {{ errorMessages.toString() }}
         </p>
-        <v-btn id="button-register" type="submitbt">
+        <button id="button-register" type="button" v-on:click="submit()">
           <v-icon style="margin-right: 3px"> mdi-lock-open</v-icon>
-          submit
-        </v-btn>
+          Utwórz konto
+        </button>
 
-        <v-row id="divider">
-          <v-divider></v-divider>
-          Or
-          <v-divider></v-divider>
-        </v-row>
-
-        <div id="media">
-          <v-btn active-class="button-media" class="verilog dialogCss">
-            submit
-          </v-btn>
-        </div>
-      </form>
+      </div>
     </div>
     <div id="right-panel">
       <v-btn id="back-login" @click="backlogin">
         <v-icon left>
           mdi-arrow-left
         </v-icon>
-        Sign In
+        Zaloguj się
       </v-btn>
     </div>
   </div>
@@ -122,7 +111,7 @@
 import { validationMixin } from "vuelidate";
 import { email, maxLength, required } from "vuelidate/lib/validators";
 import { mdiArrowLeft } from "@mdi/js";
-import User from "../models/user";
+import User from "../../models/user";
 
 export default {
   name: "Register",
@@ -249,7 +238,7 @@ export default {
 
 #right-panel {
   order: 2;
-  width: 150px;
+  width: 200px;
   float: right;
 }
 
@@ -291,7 +280,7 @@ export default {
 }
 
 #button-register {
-  width: 100%;
+  width: 60%;
 
   background-color: var(--blue-light);
   border-radius: 10px;
@@ -340,11 +329,11 @@ export default {
 
 #back-login {
   display: flex;
-  width: 110px;
-  background-color: var(--blue-light);
+  width: 180px;
+  background-color: white;
   border-radius: 20px;
   margin: 15px auto auto;
-  color: white;
+  color: black;
 }
 
 #back-login >>> v-btn {

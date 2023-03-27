@@ -22,19 +22,14 @@ const setup = store => {
         async err => {
             const originalConfig = err.config;
             if (originalConfig.url !== "/auth/signin" && err.response) {
-                // Access Token was expired
                 console.log(err.response);
                 if (err.response.status === 401 && !originalConfig._retry) {
                     originalConfig._retry = true;
-                    console.log("expired2");
                     try {
-                        console.log("expired3");
                         const rs = await api.post("/auth/refreshtoken", {
                             refreshToken: TokenService.getLocalRefreshToken(),
                         });
-
                         const {accessToken} = rs.data;
-                        console.log("aa" + rs.data);
                         store.dispatch("auth/refreshToken", accessToken);
                         TokenService.updateLocalAccessToken(accessToken);
 

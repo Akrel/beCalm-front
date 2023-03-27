@@ -2,85 +2,64 @@
   <div id="background-login">
 
     <div id="content">
-      <form id="form" @submit="login">
+      <div id="form">
         <div class="label-container">
-          <div class="title-input">Username</div>
+          <div class="title-input">Nazwa użytkownika</div>
           <v-text-field
-            v-model="username"
-            :rules="[() => !!username || 'This field is required']"
-            label="Username"
-            required
-            solo
-            @blur="$v.username.$touch()"
-            @input="$v.username.$touch()"
+              v-model="username"
+              :rules="[() => !!username || 'This field is required']"
+              label="Username"
+              required
+              solo
+              @blur="username.$touch()"
+              @input="username.$touch()"
           ></v-text-field>
         </div>
 
         <div class="label-container">
-          <div class="title-input">Password</div>
+          <div class="title-input">Hasło</div>
           <v-text-field
-            v-model="password"
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[() => !!password || 'This field is required', rules.min]"
-            :type="show1 ? 'text' : 'password'"
-            hint="At least 8 characters"
-            label="Password"
-            name="input-10-1"
-            solo
-            @click:append="show1 = !show1"
+              v-model="password"
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[() => !!password || 'This field is required', rules.min]"
+              :type="show1 ? 'text' : 'password'"
+              hint="At least 8 characters"
+              label="Password"
+              name="input-10-1"
+              solo
+              @click:append="show1 = !show1"
           ></v-text-field>
         </div>
 
-        <div id="restart-password">
-          <a> Restart password</a>
-        </div>
 
-        <v-btn id="button-register" type="submitbt">
+        <button id="button-register" type="button" v-on:click="login()">
           <v-icon style="margin-right: 3px"> mdi-lock-open</v-icon>
-          submit
-        </v-btn>
+          Zaloguj się
+        </button>
 
-        <v-row id="divider">
-          <v-divider></v-divider>
-          Or
-          <v-divider></v-divider>
-        </v-row>
-        <div id="media">
-          <v-btn active-class="button-media" class="verilog dialogCss">
-            submit
-          </v-btn>
-        </div>
-      </form>
+      </div>
     </div>
     <div id="right-panel">
       <v-btn id="back-login" @click="backregister">
         <v-icon left>
           mdi-arrow-left
         </v-icon>
-        Sign Up
+        Zarejestruj się
       </v-btn>
     </div>
   </div>
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { email, maxLength, required } from "vuelidate/lib/validators";
-import UserRequestLogin from "../models/login-request";
+import {email, maxLength, required} from "vuelidate/lib/validators";
+import UserRequestLogin from "../../models/login-request";
 
 export default {
   name: "Login",
-  mixins: [validationMixin],
 
   validations: {
-    username: { required, maxLength: maxLength(10) },
-    email: { required, email },
-    select: { required },
-    checkbox: {
-      checked(val) {
-        return val;
-      }
-    }
+    username: {required, maxLength: maxLength(10)},
+    email: {required, email},
   },
 
   data: () => ({
@@ -104,20 +83,22 @@ export default {
   methods: {
     login() {
       if (this.username && this.password) {
-        let userRequest = new UserRequestLogin(this.username,this.password)
+        let userRequest = new UserRequestLogin(this.username, this.password)
         this.$store
-          .dispatch('auth/login',userRequest  )
-          .then(
-            () => {
-              this.$router.push("/mainView");
-            },
-            error => {
-              this.message =
-                (error.response && error.response.data.message) ||
-                error.message ||
-                error.toString();
-            }
-          );
+            .dispatch('auth/login', userRequest)
+            .then((response) => {
+                  if(response)
+                  this.$router.push("/calendar")
+                  this.$store.commit('loginSuccess', response);
+                },
+
+                error => {
+                  this.message =
+                      (error.response && error.response.data.message) ||
+                      error.message ||
+                      error.toString();
+                }
+            );
       }
     },
 
@@ -174,7 +155,7 @@ export default {
 
 #right-panel {
   order: 2;
-  width: 150px;
+  width: 200px;
   float: right;
 }
 
@@ -237,11 +218,11 @@ export default {
 
 #back-login {
   display: flex;
-  width: 110px;
-  background-color: var(--blue-light);
+  width: 180px;
+  background-color: white;
   border-radius: 20px;
   margin: 15px auto auto;
-  color: white;
+  color: black;
 }
 
 .v-text-field >>> .v-messages__wrapper {

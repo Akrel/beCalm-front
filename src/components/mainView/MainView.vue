@@ -6,7 +6,7 @@
     <div id="main">
       <MenuNav></MenuNav>
       <div id="div-loader">
-        <Calendar></Calendar>
+        <router-view/>
       </div>
     </div>
   </div>
@@ -15,11 +15,10 @@
 <script>
 import MenuNav from "./navigation/MenuNav";
 import TopMenuBar from "./navigation/TopMenuBar";
-import Calendar from "../activity/Calendar";
 
 
 export default {
-  components: { Calendar, TopMenuBar, MenuNav }
+  components: {TopMenuBar, MenuNav}
 };
 </script>
 
@@ -27,6 +26,7 @@ export default {
 * {
   overflow: hidden;
 }
+
 #div-loader {
   width: 100%;
   height: 100%;

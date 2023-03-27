@@ -5,9 +5,9 @@
         class="mr-1"
         color="white"
         outlined
-        v-on:click="logout"
+        v-on:click="logout()"
     >
-      Logout
+      Wyloguj się
     </v-btn>
 
   </v-toolbar>
@@ -18,8 +18,11 @@ export default {
   name: "TopMenuBar",
   data: () => ({}),
   methods: {
-    logout(){
-       this.$router.push('/list');
+    logout() {
+      this.$store.dispatch("auth/logout")
+          .then(() => {
+            this.$router.go(0);
+          })
     }
   }
 };
@@ -34,7 +37,7 @@ export default {
 }
 
 #but {
-float: right;
+  float: right;
   margin-left: auto;
 }
 </style>

@@ -34,4 +34,7 @@ v-app {
   overflow: hidden;
   width: 100%;
 }
+body{
+  overflow-y: hidden;
+}
 </style>

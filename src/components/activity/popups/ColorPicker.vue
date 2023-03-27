@@ -4,8 +4,9 @@
       <v-btn
           :color="color"
           v-on="on"
+
       >
-        Event Color
+        Kolor Wydarzenia
       </v-btn>
     </template>
     <v-color-picker

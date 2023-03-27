@@ -2,37 +2,33 @@ import api from "./api";
 import TokenService from "../services/token.service";
 
 class AuthService {
-  login({ username, password }) {
-    return api
-      .post("/auth/signin", {
-        username,
-        password
-      })
-      .then((response) => {
-        console.log("e " + response.data)
-        if (response.data.accessToken) {
-          TokenService.setUser(response.data);
-        }
+    login({username, password}) {
+        return api.post("/auth/signin", {
+                username,
+                password
+            })
+            .then((response) => {
 
-        console.log("response" + response.data.token);
-        return response.data;
-      });
-  }
+                if (response.data.token) {
+                    TokenService.setUser(response.data);
+                }
 
-  logout() {
-    return api.post("/auth/logout")
-        .then((response) => {
-          if(response.data.status === 200)
-            TokenService.removeUser()
-        })
-  }
+                console.log("response" + response.data.token);
+                return response.data;
+            })
+            .catch(err => console.error("error" + err));
+    }
 
-  register(User) {
-    console.log(User);
-    let promise1 = api.post("/auth/signup", User);
-    promise1.then(r => console.log(r.status));
-    return promise1;
-  }
+    logout() {
+        localStorage.removeItem("user");
+    }
+
+    register(User) {
+        console.log(User);
+        let promise1 = api.post("/auth/signup", User);
+        promise1.then(r => console.log(r.status));
+        return promise1;
+    }
 }
 
 export default new AuthService();

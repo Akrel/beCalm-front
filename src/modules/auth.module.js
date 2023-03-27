@@ -1,6 +1,6 @@
 import AuthService from "../services/auth.service";
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem("user"));
 
 const stateInit = user
   ? { status: { loggedIn: true }, user }
@@ -10,15 +10,14 @@ export const auth = {
   namespaced: true,
   state: stateInit,
   actions: {
-    login({ commit }, user) {
+    async  login({ commit }, user) {
       return AuthService.login(user).then(
-        user => {
-          console.log(user)
-          commit('loginSuccess', user);
-          return Promise.resolve(user);
-        },
+          user => {
+
+            return Promise.resolve(user);
+          },
         error => {
-          commit('loginFailure');
+          commit("loginFailure");
           return Promise.reject(error);
         }
       );
@@ -37,7 +36,7 @@ export const auth = {
     },
     logout({ commit }) {
       AuthService.logout();
-      commit('logout');
+      commit("logout");
     },
     refreshToken({ commit }, accessToken) {
       commit("refreshToken", accessToken);
@@ -57,7 +56,7 @@ export const auth = {
 
     loginFailure(state) {
       state.status.loggedIn = false;
-      status.user = null;
+      state.user = null;
     },
 
     logout(state) {
